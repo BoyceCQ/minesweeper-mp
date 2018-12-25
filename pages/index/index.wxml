@@ -1,13 +1,26 @@
-<!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+<view class="wrapper">
+  <view class='header'>
+    <text class="label my-score">剩余地雷: {{minesLeft}}</text>
+    <text class="label my-score">已用时间: {{timesGo}}</text>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+
+  <view wx:for="{{mineMap}}" wx:for-item="row" wx:for-index="i" class="flex-container">
+    <button wx:for="{{row}}" wx:for-item="col" wx:for-index="j" class="flex-item {{col < 9 ? (col < 0 ? '':'open') : ((col > 9) ? 'flag' : 'mine')}}" bindtap="demining" data-x="{{i}}" data-y="{{j}}" data-value="{{col}}">
+      {{col < 9 ? (col < 0 ? '':col) : ((col > 9) ? 'F' : 'M')}}
+    </button>
   </view>
+
+  <view class='footer'>
+    <view>
+      <button class="start-button" type="primary" size="mini" bindtap="setGame" hover-class="button-hover">{{buttionText}}</button>
+    </view>
+
+    <view>
+      <switch bindchange="flagSwitch"/>
+    </view>
+  </view>
+</view>
+
+<view class="tips">
+    <text>- 点击 START 开始游戏，RESTART 重新开始\n- Switch 切换标志插旗</text>
 </view>
